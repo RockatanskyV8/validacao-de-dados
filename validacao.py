@@ -38,7 +38,9 @@ cvKFold           = KFold(n_splits = 10)
 #  cvStratifiedKFold = StratifiedKFold(**kwargs)
 #  cvGroupKFold      = GroupKFold(**kwargs)
 
-arvore_decisao = modelos.arvore_decisao(cvKFold, df.modelo, 2, 128)
+arvore_decisao_2d = modelos.arvore_decisao_2d(cvKFold, df.modelo, 2, 128)
+arvore_decisao_3d = modelos.arvore_decisao_3d(cvKFold, df.modelo, 2, 128, 128)
 
-print(arvore_decisao)
+print(arvore_decisao_2d)
+print(arvore_decisao_3d)
 
