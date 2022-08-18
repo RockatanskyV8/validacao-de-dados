@@ -2,8 +2,12 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_validate
 from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import RandomizedSearchCV
+
 import numpy as np
 import pandas as pd
+
+import time
 
 class Split:
 
@@ -53,13 +57,20 @@ class Modelos:
 class Explorador:
 
     def __init__(self, seed, espaco_de_parametros, x, y):
-       self.SEED = seed
-       self.espaco_de_parametros = espaco_de_parametros
-       self.x = x
-       self.y = y
+        self.SEED = seed
+        self.espaco_de_parametros = espaco_de_parametros
+        self.x = x
+        self.y = y
 
-    def busca(self, CV, GROUPS):
-       busca = GridSearchCV(DecisionTreeClassifier(), self.espaco_de_parametros, cv = CV)
-       busca.fit(self.x, self.y, groups = GROUPS)
-       return busca
+    def busca_grid(self, CV, GROUPS):
+        np.random.seed(self.SEED)
+        busca = GridSearchCV(DecisionTreeClassifier(), self.espaco_de_parametros, cv = CV)
+        busca.fit(self.x, self.y, groups = GROUPS)
+        return busca
+
+    def busca_random(self, CV, N_ITER):
+        busca = RandomizedSearchCV(DecisionTreeClassifier(), self.espaco_de_parametros, n_iter = N_ITER, cv = CV, random_state = SEED)
+        busca.fit(self.x, self.y)
+        tac = time.time()
+        return busca
 
