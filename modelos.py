@@ -1,8 +1,10 @@
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_validate
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
+
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
 
 import numpy as np
 import pandas as pd
@@ -64,13 +66,17 @@ class Explorador:
 
     def busca_grid(self, CV, GROUPS):
         np.random.seed(self.SEED)
-        busca = GridSearchCV(DecisionTreeClassifier(), self.espaco_de_parametros, cv = CV)
+        busca = GridSearchCV(RandomForestClassifier(), self.espaco_de_parametros, cv = CV)
         busca.fit(self.x, self.y, groups = GROUPS)
         return busca
 
-    def busca_random(self, CV, N_ITER):
-        busca = RandomizedSearchCV(DecisionTreeClassifier(), self.espaco_de_parametros, n_iter = N_ITER, cv = CV, random_state = SEED)
+    def busca_random(self, CV, GROUPS):
+        busca = RandomizedSearchCV(RandomForestClassifier(), self.espaco_de_parametros, cv = CV, random_state = self.SEED)
+        busca.fit(self.x, self.y, groups = GROUPS)
+        return busca
+
+    def busca_random_iter(self, CV, N_ITER):
+        busca = RandomizedSearchCV(RandomForestClassifier(), self.espaco_de_parametros, n_iter = N_ITER, cv = CV, random_state = self.SEED)
         busca.fit(self.x, self.y)
-        tac = time.time()
         return busca
 
