@@ -30,6 +30,17 @@ class Modelos:
        self.x = x
        self.y = y
 
+    def arvore_decisao(self, CV, GROUPS, MAX_DEPTH):
+       np.random.seed(self.SEED)
+       modelo = DecisionTreeClassifier(max_depth=MAX_DEPTH)
+       results = cross_validate(modelo, self.x, self.y, cv = CV, groups = GROUPS, return_train_score=True)
+
+       train_score = results['train_score'].mean() * 100
+       test_score  = results['test_score'].mean() * 100
+
+       tabela = { "MAX_DEPTH" : MAX_DEPTH, "MIN_SAMPLES_LEAF" : MIN_SAMPLES_LEAF, "train_score" : train_score, "test_score" : test_score}
+       return tabela 
+
     def arvore_decisao_2d(self, CV, GROUPS, MAX_DEPTH, MIN_SAMPLES_LEAF):
        np.random.seed(self.SEED)
        modelo = DecisionTreeClassifier(max_depth=MAX_DEPTH, min_samples_leaf=MIN_SAMPLES_LEAF)
